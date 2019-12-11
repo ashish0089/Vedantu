@@ -7,10 +7,12 @@ class RightPanel extends React.Component{
     constructor(props){
         super(props);
         this.handleChange = this.handleChange.bind(this);
+        this.handleLanguageChange = this.handleLanguageChange.bind(this);
         this.state = {
             searchText:'',
             repoData :[],
-            initialData: []
+            initialData: [],
+            selectedLang:''
         }
     }
     componentDidMount(){
@@ -32,6 +34,10 @@ class RightPanel extends React.Component{
             searchText:event.target.value
         });
 
+        this.setState(() =>({
+            selectedLang :"All"
+        }));
+
         var Filtereddata = this.state.initialData;
         if(event.target.value === ''){
             this.setState({
@@ -39,8 +45,31 @@ class RightPanel extends React.Component{
             });
             
         }else {
-            Filtereddata = this.state.repoData.filter(repo =>{
-                return repo.name.indexOf(this.state.searchText) !== -1;
+            Filtereddata = Filtereddata.filter(repo =>{
+                return repo.name.toUpperCase().indexOf(this.state.searchText.toUpperCase()) !== -1;
+            });
+            this.setState({
+                repoData:Filtereddata
+            });
+        }
+        
+    }
+
+    handleLanguageChange(event){
+        let searchText = event.target.value;
+        this.setState({
+            selectedLang:event.target.value
+        });
+
+        var Filtereddata = this.state.initialData;
+        if(event.target.value === 'All'){
+            this.setState({
+                repoData:Filtereddata
+            });
+            
+        }else {
+            Filtereddata = Filtereddata.filter(repo =>{
+                return repo.language === searchText;
             });
             this.setState({
                 repoData:Filtereddata
@@ -75,9 +104,9 @@ class RightPanel extends React.Component{
                         <option>Forks</option>
                         <option>Archived</option>
                      </select>
-                     <select>
+                     <select onChange={this.handleLanguageChange} value ={this.state.selectedLang}>
                         <option>All</option>
-                        <option>javaScript</option>
+                        <option>JavaScript</option>
                         <option>HTML</option>
                         <option>CSS</option>
                      </select>

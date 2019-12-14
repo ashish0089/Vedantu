@@ -1,6 +1,6 @@
 import React from 'react';
-import  RightPanel from './RightPanel';
-import LeftPanel from './LeftPanel';
+import  RightPanel from './../container/RightPanel';
+import LeftPanel from './../container/LeftPanel';
 import './App.css';
 
 

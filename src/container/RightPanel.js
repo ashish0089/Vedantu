@@ -1,6 +1,8 @@
 import React from 'react';
-import './App.css';
+import './../components/App.css';
 import RepoPageComp from './RepoPageComp';
+import { connect } from 'react-redux';
+import {getReposDetails} from './../actions/getRepodetailsAction';
 
 class RightPanel extends React.Component{
 
@@ -16,18 +18,20 @@ class RightPanel extends React.Component{
         }
     }
     componentDidMount(){
-        fetch('https://api.github.com/users/supreetsingh247/repos')
-        .then(response => response.json())
-        .then(data =>{
-            this.setState({
-                repoData:data
-            });
-            this.setState({
-                initialData:[...data]
-            });
-        });
-        
+        this.props.getReposDetails();
     }
+
+    componentWillReceiveProps(nextProps, prevProps){
+        if(nextProps.repo){
+            this.setState({
+                repoData:nextProps.repo
+            });
+            this.setState({
+                initialData:[...nextProps.repo]
+            });
+        }   
+    }
+    
 
     handleChange(event){
         this.setState({
@@ -35,8 +39,8 @@ class RightPanel extends React.Component{
         });
 
         this.setState(() =>({
-            selectedLang :"All"
-        }));
+            selectedLang:'All'
+        }))
 
         var Filtereddata = this.state.initialData;
         if(event.target.value === ''){
@@ -57,10 +61,9 @@ class RightPanel extends React.Component{
 
     handleLanguageChange(event){
         let searchText = event.target.value;
-        this.setState({
-            selectedLang:event.target.value
-        });
-
+        this.setState(() =>({
+            selectedLang:searchText
+        }))
         var Filtereddata = this.state.initialData;
         if(event.target.value === 'All'){
             this.setState({
@@ -75,7 +78,6 @@ class RightPanel extends React.Component{
                 repoData:Filtereddata
             });
         }
-        
     }
 
     render(){
@@ -104,7 +106,7 @@ class RightPanel extends React.Component{
                         <option>Forks</option>
                         <option>Archived</option>
                      </select>
-                     <select onChange={this.handleLanguageChange} value ={this.state.selectedLang}>
+                     <select onChange={this.handleLanguageChange} value={this.state.selectedLang}>
                         <option>All</option>
                         <option>JavaScript</option>
                         <option>HTML</option>
@@ -112,7 +114,7 @@ class RightPanel extends React.Component{
                      </select>
                      </div>
                     <div>
-                        {this.state.repoData.length !== 0 && 
+                        {this.state.repoData && 
                             this.state.repoData.map((repo) =>{
                                 return <RepoPageComp repo={repo} key={repo.id}></RepoPageComp>
                             })}
@@ -123,5 +125,17 @@ class RightPanel extends React.Component{
     }
 
 }
+
+const mapStateToProps = (state) => ({
+    repo: state.repos,
+});
+
+function mapDispatchToProps (dispatch) {
+    return {
+        getReposDetails: () => dispatch(getReposDetails())
+    }
+  }
+
+RightPanel = connect(mapStateToProps,mapDispatchToProps)(RightPanel);
 
 export default RightPanel;

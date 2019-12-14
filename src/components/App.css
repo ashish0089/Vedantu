@@ -2,18 +2,19 @@
   margin-right: 10%;
 }
 
-/* .repotable{
-  border: 1px solid black;
-} */
-.leftPanelPage{
-  width: 30%;
-  /* border: 1px solid black; */
-  float: left;
+
+@media screen and (min-width: 992px) {
+  .leftPanelPage{
+    width: 30%;
+    float: left;
+  }
+  .rightPanelPage{
+    width: 40%;
+    float: right;
+    margin-right: 19%;
+  }
 }
-.rightPanelPage{
-  width: 69%;
-  float: left;
-}
+
 .navContainer {
   margin-bottom: 2%;
 }
@@ -59,8 +60,11 @@ svg{
   margin-right: 2%;
 }
 button{
-  width: 65%;
+  width: 92%;
   height:35px;
   margin-top: 5%;
   margin-bottom: 5%;
+}
+.leftContainer{
+  margin-left:35%;
 }

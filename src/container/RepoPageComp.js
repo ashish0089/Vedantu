@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './../components/App.css';
 // import moment from 'moment';
 
 function RepoPageComp(props){
@@ -14,4 +14,3 @@ function RepoPageComp(props){
 }
 
 export default RepoPageComp;
-
